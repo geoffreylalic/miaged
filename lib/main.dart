@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:miaged/pages/authentication/login.dart';
+import 'package:miaged/pages/authentication/register.dart';
 import 'package:miaged/pages/clothingList.dart';
 import 'package:miaged/pages/home.dart';
 import 'package:miaged/pages/search.dart';
@@ -16,11 +18,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MIAGED',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: const LoginWidget(),
     );
   }
 }
