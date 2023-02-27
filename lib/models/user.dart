@@ -2,34 +2,34 @@ class UserModel {
   String? username;
   String? email;
   String? photoUrl;
-  String? password;
+  String? token;
   String? address;
   String? zipCode;
   String? city;
-  String? id;
-  bool? isOnline;
+  String? idUser;
+  DateTime? birthdate;
 
   UserModel({
     this.username,
     this.email,
-    this.password,
+    this.token,
     this.address,
     this.zipCode,
     this.city,
-    this.id,
-    this.isOnline,
+    this.idUser,
+    this.birthdate,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     email = json['email'];
     photoUrl = json['photoUrl'];
-    password = json['password'];
+    token = json['token'];
     address = json['address'];
     zipCode = json['zipCode'];
     city = json['city'];
-    id = json['id'];
-    isOnline = json['isOnline'];
+    idUser = json['idUser'];
+    birthdate = json['birthdate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,12 +37,12 @@ class UserModel {
     data['username'] = username;
     data['email'] = email;
     data['photoUrl'] = photoUrl;
-    data['password'] = password;
+    data['token'] = token;
     data['address'] = address;
     data['zipCode'] = zipCode;
     data['city'] = city;
-    data['id'] = id;
-    data['isOnline'] = isOnline;
+    data['idUser'] = idUser;
+    data['birthdate'] = birthdate;
     return data;
   }
 }
