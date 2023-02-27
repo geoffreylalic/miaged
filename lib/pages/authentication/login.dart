@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:miaged/models/user.dart';
+import 'package:miaged/services/userService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
@@ -85,10 +91,32 @@ class _LoginWidgetState extends State<LoginWidget> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+                      final prefs = await SharedPreferences.getInstance();
                       // Enregistrer les données de l'utilisateur
+                      signInWithEmailAndPassword(_email, _password)
+                          .then((value) async {
+                        var user = UserModel(
+                            idUser: value!.uid, token: value.refreshToken);
+                        final snapshot = await FirebaseFirestore.instance
+                            .collection('profiles')
+                            .doc(user.idUser)
+                            .get();
+                        var profile = snapshot.data();
+                        user.birthdate = profile!["birthdate"];
+                        user.photoUrl = profile["photoUrl"];
+                        user.username = profile["username"];
+                        user.email = profile["email"];
+                        user.city = profile["city"];
+                        user.address = profile["address"];
+                        user.zipCode = profile["zipCode"];
+                        await prefs.setString('user', jsonEncode(user));
+                        print("value -> $value");
+                      }).onError((error, stackTrace) {
+                        print("error login $error");
+                      });
                     }
                   },
                   child: const Text("Se connecter"),

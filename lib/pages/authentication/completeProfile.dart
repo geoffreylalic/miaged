@@ -46,7 +46,6 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget> {
           .limit(1)
           .get();
       if (snapshot.size > 0) {
-        final profile = snapshot.docs.first.data();
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const LoginWidget()));
       } else {
