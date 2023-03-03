@@ -105,14 +105,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                             .doc(user.idUser)
                             .get();
                         var profile = snapshot.data();
-                        user.birthdate = profile!["birthdate"];
+                        print("profile ------->");
+                        print(profile!["birthdate"].seconds);
+                        user.birthdate = DateTime.fromMillisecondsSinceEpoch(
+                            profile["birthdate"].seconds);
                         user.photoUrl = profile["photoUrl"];
                         user.username = profile["username"];
                         user.email = profile["email"];
                         user.city = profile["city"];
                         user.address = profile["address"];
                         user.zipCode = profile["zipCode"];
-                        await prefs.setString('user', jsonEncode(user));
+                        await prefs.setString('user', jsonEncode(user.toJson()));
                         print("value -> $value");
                       }).onError((error, stackTrace) {
                         print("error login $error");
