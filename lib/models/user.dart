@@ -7,7 +7,7 @@ class UserModel {
   String? zipCode;
   String? city;
   String? idUser;
-  DateTime? birthdate;
+  int? birthdate;
 
   UserModel({
     this.username,

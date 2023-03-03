@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:miaged/models/user.dart';
+import 'package:miaged/pages/home.dart';
 import 'package:miaged/services/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' show JSON;
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
@@ -105,18 +107,26 @@ class _LoginWidgetState extends State<LoginWidget> {
                             .doc(user.idUser)
                             .get();
                         var profile = snapshot.data();
-                        print("profile ------->");
-                        print(profile!["birthdate"].seconds);
-                        user.birthdate = DateTime.fromMillisecondsSinceEpoch(
-                            profile["birthdate"].seconds);
-                        user.photoUrl = profile["photoUrl"];
+                        // print("profile ------->");
+                        var birthdate = profile!["birthdate"].seconds;
+                        // todo to retrieve exact date
+                        // DateTime.fromMillisecondsSinceEpoch(
+                        //     profile!["birthdate"].seconds * 1000);
+                        user.birthdate = birthdate;
+                        user.photoUrl = profile!["photoUrl"];
                         user.username = profile["username"];
                         user.email = profile["email"];
                         user.city = profile["city"];
                         user.address = profile["address"];
                         user.zipCode = profile["zipCode"];
-                        await prefs.setString('user', jsonEncode(user.toJson()));
+                        await prefs.setString(
+                            'user', jsonEncode(user.toJson()));
                         print("value -> $value");
+                        print("user $user");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeWidget()));
                       }).onError((error, stackTrace) {
                         print("error login $error");
                       });
