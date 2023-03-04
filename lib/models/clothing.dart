@@ -1,12 +1,9 @@
-import 'dart:ffi';
-
 class ClothingModel {
   String? id;
   String? name;
   String? photoUrl;
   String? size;
   int? price;
-  String? description;
   String? brand;
 
   ClothingModel({
@@ -15,28 +12,25 @@ class ClothingModel {
     this.photoUrl,
     this.size,
     this.price,
-    this.description,
-    this.brand
+    this.brand,
   });
 
   ClothingModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    name = json['id'];
     name = json['name'];
     photoUrl = json['photoUrl'];
     size = json['size'];
     price = json['price'];
-    description = json['description'];
     brand = json['brand'];
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(List<ClothingModel> value) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['photoUrl'] = photoUrl;
     data['size'] = size;
     data['price'] = price;
-    data['description'] = description;
     data['brand'] = brand;
     return data;
   }

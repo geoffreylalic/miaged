@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:miaged/pages/profile.dart';
 import 'package:miaged/pages/shoppingBasket.dart';
 
 import '../widgets/customButtomAppBar.dart';
@@ -22,13 +23,15 @@ class _ClothingListWidgetState extends State<ClothingListWidget> {
       ),
       body: _navigation == "buy"
           ? const HomeWidget()
-          : const ShoppingBasketWidget(),
+          : _navigation == "shoppingBasket"
+              ? const ShoppingBasketWidget()
+              : _navigation == "profile"
+                  ? const ProfileWidget()
+                  : const HomeWidget(),
       bottomNavigationBar: CustomBottomAppBar(
         onNavigationChanged: (String data) {
           setState(() {
             _navigation = data;
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => Home()));
           });
         },
       ),
