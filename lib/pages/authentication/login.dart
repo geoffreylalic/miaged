@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:miaged/models/user.dart';
+import 'package:miaged/pages/clothingList.dart';
 import 'package:miaged/pages/home.dart';
 import 'package:miaged/services/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -126,7 +127,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HomeWidget()));
+                                builder: (context) => const ClothingListWidget()));
                       }).onError((error, stackTrace) {
                         print("error login $error");
                       });

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:miaged/pages/shoppingBasket.dart';
+
+import '../widgets/customButtomAppBar.dart';
+import 'home.dart';
 
 class ClothingListWidget extends StatefulWidget {
   const ClothingListWidget({super.key});
@@ -8,20 +12,26 @@ class ClothingListWidget extends StatefulWidget {
 }
 
 class _ClothingListWidgetState extends State<ClothingListWidget> {
+  late String _navigation = "buy";
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: (context, i) {
-        if (i.isOdd) {
-          return const Divider();
-        } else {
-          return const Image(
-            image: NetworkImage(
-                'https://media.tenor.com/dxiNcLo5hQIAAAAd/edp-i-mean-its-alright.gif'),
-          );
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Miaged'),
+      ),
+      body: _navigation == "buy"
+          ? const HomeWidget()
+          : const ShoppingBasketWidget(),
+      bottomNavigationBar: CustomBottomAppBar(
+        onNavigationChanged: (String data) {
+          setState(() {
+            _navigation = data;
+            // Navigator.push(
+            //     context, MaterialPageRoute(builder: (context) => Home()));
+          });
+        },
+      ),
     );
   }
 }

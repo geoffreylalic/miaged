@@ -14,7 +14,7 @@ class CustomBottomAppBar extends StatefulWidget {
 }
 
 class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
-  late String _navigation = "home";
+  late String _navigation = "buy";
 
   @override
   void initState() {
@@ -28,61 +28,46 @@ class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         IconButton(
-          tooltip: 'Home',
-          icon: _navigation == 'home'
-              ? (const Icon(Icons.home))
-              : (const Icon(Icons.home_outlined)),
+          tooltip: 'Acheter',
+          icon: _navigation == 'buy'
+              ? Icon(
+                  Icons.store,
+                  color: Colors.blue.shade400,
+                )
+              : (const Icon(Icons.store_outlined)),
           onPressed: () {
             setState(() {
-              _navigation = 'home';
+              _navigation = 'buy';
               widget.onNavigationChanged(_navigation);
             });
           },
         ),
         IconButton(
-          tooltip: 'Search',
-          icon: _navigation == 'search'
-              ? const Icon(Icons.search_rounded)
-              : const Icon(Icons.search),
+          tooltip: 'Panier',
+          icon: _navigation == 'shoppingBasket'
+              ? Icon(
+                  Icons.shopping_basket,
+                  color: Colors.blue.shade400,
+                )
+              : const Icon(Icons.shopping_basket_outlined),
           onPressed: () {
             setState(() {
-              _navigation = 'search';
-              widget.onNavigationChanged(_navigation);
-            });
-          },
-        ),
-        IconButton(
-          tooltip: 'Sell',
-          icon: _navigation == 'sell'
-              ? const Icon(Icons.add_circle)
-              : const Icon(Icons.add_circle_outline),
-          onPressed: () {
-            setState(() {
-              _navigation = 'sell';
-              widget.onNavigationChanged(_navigation);
-            });
-          },
-        ),
-        IconButton(
-          tooltip: 'Messages',
-          icon: _navigation == 'messages'
-              ? const Icon(Icons.email)
-              : const Icon(Icons.email_outlined),
-          onPressed: () {
-            setState(() {
-              _navigation = 'messages';
+              _navigation = 'shoppingBasket';
               widget.onNavigationChanged(_navigation);
             });
           },
         ),
         IconButton(
           tooltip: 'Profile',
-          icon: _navigation == 'profil'
-              ? const Icon(Icons.person)
-              : const Icon(Icons.person_outline),
+          icon: _navigation == 'profile'
+              ? Icon(
+                  Icons.person,
+                  color: Colors.blue.shade400,
+                )
+              : const Icon(Icons.person_outlined),
           onPressed: () {
             setState(() {
-              _navigation = 'profil';
+              _navigation = 'profile';
               widget.onNavigationChanged(_navigation);
             });
           },

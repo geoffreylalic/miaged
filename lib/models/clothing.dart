@@ -14,7 +14,7 @@ class ClothingModel {
     this.name,
     this.photoUrl,
     this.size,
-    this.price = 1,
+    this.price,
     this.description,
     this.brand
   });

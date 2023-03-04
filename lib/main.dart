@@ -7,7 +7,6 @@ import 'package:miaged/pages/authentication/login.dart';
 import 'package:miaged/pages/authentication/register.dart';
 import 'package:miaged/pages/clothingList.dart';
 import 'package:miaged/pages/home.dart';
-import 'package:miaged/pages/search.dart';
 import 'package:miaged/widgets/customButtomAppBar.dart';
 
 Future<void> main() async {
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginWidget(),
+      home: const ClothingListWidget(),
     );
   }
 }
@@ -40,42 +39,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late String _navigation = "home";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Container(
-        width: double.infinity,
-        height: 40,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(5)),
-        child: Center(
-          child: TextField(
-            decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    /* Clear the search field */
-                  },
-                ),
-                hintText: 'Rechercher un article ou un membre',
-                border: InputBorder.none),
-          ),
-        ),
-      )),
-      body: _navigation == "home" ? HomeWidget() : SearchWidget(),
-      bottomNavigationBar: CustomBottomAppBar(
-        onNavigationChanged: (String data) {
-          setState(() {
-            _navigation = data;
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => Home()));
-          });
-        },
-      ),
-    );
+    return Container();
   }
 }
