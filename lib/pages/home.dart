@@ -52,7 +52,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           // Gestion des erreurs ici
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Erreur de connexion'),
+              title: const Text('Erreur de connexion liste'),
             ),
             body: Center(
               child: Text('Erreur: ${snapshot.error}'),

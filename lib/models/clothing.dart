@@ -34,4 +34,9 @@ class ClothingModel {
     data['brand'] = brand;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'ClothingModel {id $id ,name $name photoUrl $photoUrl size $size price $price brand $brand}';
+  }
 }

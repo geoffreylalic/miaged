@@ -36,7 +36,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         title: Text('Inscription'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -106,7 +106,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      createUserWithEmailAndPassword(_email, _password).then(
+                      UserService.createUserWithEmailAndPassword(_email, _password).then(
                         (value) async {
                           print(value);
                           final prefs = await SharedPreferences.getInstance();

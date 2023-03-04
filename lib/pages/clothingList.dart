@@ -6,7 +6,8 @@ import '../widgets/customButtomAppBar.dart';
 import 'home.dart';
 
 class ClothingListWidget extends StatefulWidget {
-  const ClothingListWidget({super.key});
+  final String wantedNavigation;
+  const ClothingListWidget({super.key, required this.wantedNavigation});
 
   @override
   State<ClothingListWidget> createState() => _ClothingListWidgetState();
@@ -14,6 +15,15 @@ class ClothingListWidget extends StatefulWidget {
 
 class _ClothingListWidgetState extends State<ClothingListWidget> {
   late String _navigation = "buy";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.wantedNavigation != null || widget.wantedNavigation.isNotEmpty) {
+      _navigation = widget.wantedNavigation;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

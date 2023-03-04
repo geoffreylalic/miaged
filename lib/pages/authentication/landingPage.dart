@@ -48,7 +48,6 @@ class LandingPageWidget extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: TextButton(
               onPressed: () {
-                print("clicked");
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginWidget()),

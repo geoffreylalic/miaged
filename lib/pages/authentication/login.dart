@@ -99,7 +99,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       _formKey.currentState!.save();
                       final prefs = await SharedPreferences.getInstance();
                       // Enregistrer les données de l'utilisateur
-                      signInWithEmailAndPassword(_email, _password)
+                      UserService.signInWithEmailAndPassword(_email, _password)
                           .then((value) async {
                         var user = UserModel(
                             idUser: value!.uid, token: value.refreshToken);
@@ -108,7 +108,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                             .doc(user.idUser)
                             .get();
                         var profile = snapshot.data();
-                        // print("profile ------->");
                         var birthdate = profile!["birthdate"].seconds;
                         // todo to retrieve exact date
                         // DateTime.fromMillisecondsSinceEpoch(
@@ -127,7 +126,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ClothingListWidget()));
+                                builder: (context) => const ClothingListWidget(
+                                    wantedNavigation: "buy")));
                       }).onError((error, stackTrace) {
                         print("error login $error");
                       });

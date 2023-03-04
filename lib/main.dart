@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ClothingListWidget(),
+      home: const ClothingListWidget(wantedNavigation: "buy",),
     );
   }
 }
