@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:miaged/pages/clothingList.dart';
 import 'package:miaged/pages/home.dart';
 import 'package:miaged/pages/shoppingBasket.dart';
+import 'package:miaged/services/userService.dart';
 
 import '../services/clothingService.dart';
 
@@ -21,12 +22,13 @@ class DetailClothingWidget extends StatelessWidget {
     }
 
     void addToShoppingBasket() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                const ClothingListWidget(wantedNavigation: "shoppingBasket")),
-      );
+      UserService.addToBasket(idClothing);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) =>
+      //           const ClothingListWidget(wantedNavigation: "shoppingBasket")),
+      // );
     }
 
     return FutureBuilder(

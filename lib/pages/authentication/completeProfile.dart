@@ -54,6 +54,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget> {
         user["address"] = _address;
         user["zipCode"] = _zipCode;
         user["city"] = _city;
+        user["basket"] = [];
         final docRef = FirebaseFirestore.instance
             .collection('profiles')
             .doc(user["idUser"]);

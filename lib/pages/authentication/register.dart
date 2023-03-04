@@ -43,7 +43,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Nom d\'utilisateur'),
+                decoration:
+                    const InputDecoration(labelText: 'Nom d\'utilisateur'),
                 validator: (value) {
                   if (value == '') {
                     return 'Veuillez entrer un nom d\'utilisateur';
@@ -106,14 +107,25 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      UserService.createUserWithEmailAndPassword(_email, _password).then(
+                      UserService.createUserWithEmailAndPassword(
+                              _email, _password)
+                          .then(
                         (value) async {
                           print(value);
                           final prefs = await SharedPreferences.getInstance();
-                          UserModel user = UserModel(email: _email, token: value?.refreshToken, idUser: value?.uid, username: _username);
+                          UserModel user = UserModel(
+                              email: _email,
+                              token: value?.refreshToken,
+                              idUser: value?.uid,
+                              username: _username,
+                              basket: []);
                           String userStore = jsonEncode(user);
                           await prefs.setString('user', userStore);
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const CompleteProfileWidget()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CompleteProfileWidget()));
                         },
                       ).onError((error, stackTrace) {
                         print("error ici ---");

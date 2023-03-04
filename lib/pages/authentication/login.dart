@@ -108,7 +108,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             .doc(user.idUser)
                             .get();
                         var profile = snapshot.data();
-                        var birthdate = profile!["birthdate"].seconds;
+                        var birthdate = profile!["birthdate"];
                         // todo to retrieve exact date
                         // DateTime.fromMillisecondsSinceEpoch(
                         //     profile!["birthdate"].seconds * 1000);
@@ -119,6 +119,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         user.city = profile["city"];
                         user.address = profile["address"];
                         user.zipCode = profile["zipCode"];
+                        user.basket = profile["basket"];
                         await prefs.setString(
                             'user', jsonEncode(user.toJson()));
                         print("value -> $value");
