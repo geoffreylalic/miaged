@@ -15,7 +15,6 @@ class UserService {
       password: password,
     );
     final User? user = userCredential.user;
-    print(user);
     return user;
   }
 
@@ -54,20 +53,22 @@ class UserService {
     var prefsUserStored = prefs.getString("user");
     var user = jsonDecode(prefsUserStored!);
     var basket = user["basket"];
-    List<dynamic> result = basket.map((idArticle) async {
+    List<ClothingModel> result = [];
+    for (var idArticle in basket) {
       var doc = await FirebaseFirestore.instance
           .collection('clothings')
           .doc(idArticle)
           .get();
       var article = doc.data();
-      return ClothingModel(
+      var data = ClothingModel(
           id: doc.id,
           brand: article!["brand"],
           name: article["name"],
           photoUrl: article["photoUrl"],
           price: article["price"],
           size: article["size"]);
-    }).toList();
+      result.add(data);
+    }
     return result;
   }
 }
