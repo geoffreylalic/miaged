@@ -17,7 +17,10 @@ class DetailClothingWidget extends StatelessWidget {
     void returnToListClothing() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const ClothingListWidget(wantedNavigation: 'buy',)),
+        MaterialPageRoute(
+            builder: (context) => const ClothingListWidget(
+                  wantedNavigation: 'buy',
+                )),
       );
     }
 
@@ -67,12 +70,8 @@ class DetailClothingWidget extends StatelessWidget {
             ),
           );
         } else {
-          // Affichage d'un indicateur de chargement
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Ma page'),
-            ),
-            body: const Center(
+          return const Scaffold(
+            body: Center(
               child: CircularProgressIndicator(),
             ),
           );

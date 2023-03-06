@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:miaged/services/userService.dart';
 
+import '../models/clothing.dart';
 import '../services/clothingService.dart';
 import '../widgets/carteArticle.dart';
 
@@ -12,16 +13,32 @@ class ShoppingBasketWidget extends StatefulWidget {
 }
 
 class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
+  late Future<List<ClothingModel>> _basketFuture;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _basketFuture = UserService.getBasket();
+  }
+
+  void refreshBasket(bool isDeleted) {
+    setState(() {
+      _basketFuture = UserService.getBasket();
+      print("state ${_basketFuture}");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: UserService.getBasket(),
+      // future: UserService.getBasket(),
+      future: _basketFuture,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
           final data = snapshot.data;
           for (var element in data) print(element);
           return ListView(children: [
-            Text("teste"),
             for (var element in data)
               CarteArticle(
                 id: element.id,
@@ -29,6 +46,8 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
                 price: element.price,
                 size: element.size,
                 photoUrl: element.photoUrl,
+                isBasketArticle: true,
+                deleteCallback: refreshBasket,
               ),
           ]);
         } else if (snapshot.hasError) {
@@ -42,12 +61,8 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
             ),
           );
         } else {
-          // Affichage d'un indicateur de chargement
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Ma page'),
-            ),
-            body: const Center(
+          return const Scaffold(
+            body: Center(
               child: CircularProgressIndicator(),
             ),
           );

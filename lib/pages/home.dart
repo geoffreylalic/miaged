@@ -45,6 +45,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   price: element.price,
                   size: element.size,
                   photoUrl: element.photoUrl,
+                  isBasketArticle: false,
                 ),
               )
           ]);
@@ -59,12 +60,8 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           );
         } else {
-          // Affichage d'un indicateur de chargement
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Ma page'),
-            ),
-            body: const Center(
+          return const Scaffold(
+            body: Center(
               child: CircularProgressIndicator(),
             ),
           );

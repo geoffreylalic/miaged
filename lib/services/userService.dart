@@ -48,7 +48,7 @@ class UserService {
     // profile.basket.push(idArticle);
   }
 
-  static Future<List<dynamic>> getBasket() async {
+  static Future<List<ClothingModel>> getBasket() async {
     var prefs = await SharedPreferences.getInstance();
     var prefsUserStored = prefs.getString("user");
     var user = jsonDecode(prefsUserStored!);
@@ -70,5 +70,24 @@ class UserService {
       result.add(data);
     }
     return result;
+  }
+
+  static void removeFromBasket(String? idArticle) async {
+    var prefs = await SharedPreferences.getInstance();
+    var prefsUserStored = prefs.getString("user");
+    var user = jsonDecode(prefsUserStored!);
+    var basket = user["basket"];
+    basket.remove(idArticle);
+    // prefs.setString("user", jsonDecode(user));
+    FirebaseFirestore.instance
+        .collection('profiles')
+        .doc(user["idUser"])
+        .set(user)
+        .then((value) {
+      print('Panier mis à jour');
+      var encodedUser = jsonEncode(user);
+      prefs.setString('user', encodedUser);
+    }).catchError((error) =>
+            print('Erreur lors de la mise à jour du document: $error'));
   }
 }
