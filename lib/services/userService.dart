@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:miaged/models/clothing.dart';
+import 'package:miaged/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -89,5 +90,21 @@ class UserService {
       prefs.setString('user', encodedUser);
     }).catchError((error) =>
             print('Erreur lors de la mise à jour du document: $error'));
+  }
+
+  static getProfile() async {
+    var prefs = await SharedPreferences.getInstance();
+    var prefsUserStored = prefs.getString("user");
+    var user = jsonDecode(prefsUserStored!);
+    var result;
+    FirebaseFirestore.instance
+        .collection('profiles')
+        .doc(user["idUser"])
+        .get()
+        .then((snapshot) {
+      result = UserModel.fromJson(snapshot.data());
+    }).catchError((error) =>
+            print('Erreur lors de la mise à jour du document: $error'));
+    return result;
   }
 }

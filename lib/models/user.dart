@@ -22,8 +22,8 @@ class UserModel {
     this.basket,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json) {
-    username = json['username'];
+  UserModel.fromJson(Map<String, dynamic>? json) {
+    username = json!['username'];
     email = json['email'];
     photoUrl = json['photoUrl'];
     token = json['token'];
