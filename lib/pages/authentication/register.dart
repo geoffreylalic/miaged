@@ -111,7 +111,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               _email, _password)
                           .then(
                         (value) async {
-                          print(value);
                           final prefs = await SharedPreferences.getInstance();
                           UserModel user = UserModel(
                               email: _email,
@@ -128,7 +127,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       const CompleteProfileWidget()));
                         },
                       ).onError((error, stackTrace) {
-                        print("error ici ---");
                         print(error.toString());
                       });
                       // Enregistrer les données de l'utilisateur

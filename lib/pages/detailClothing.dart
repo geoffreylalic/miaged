@@ -26,12 +26,12 @@ class DetailClothingWidget extends StatelessWidget {
 
     void addToShoppingBasket() {
       UserService.addToBasket(idClothing);
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) =>
-      //           const ClothingListWidget(wantedNavigation: "shoppingBasket")),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                const ClothingListWidget(wantedNavigation: "shoppingBasket")),
+      );
     }
 
     return FutureBuilder(
@@ -39,10 +39,6 @@ class DetailClothingWidget extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data;
-          print("on est la ");
-          print(data.runtimeType);
-          print(data.toString());
-          print(data.name);
           return Container(
               child: ListView(
             children: [

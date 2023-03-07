@@ -19,24 +19,39 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _basketFuture = UserService.getBasket();
+    _basketFuture = _getBasket();
   }
 
-  void refreshBasket(bool isDeleted) {
+  void _refreshBasket(bool isDeleted) {
     setState(() {
-      _basketFuture = UserService.getBasket();
-      print("state ${_basketFuture}");
+      _basketFuture = _getBasket();
+      _basketFuture = _getBasket();
+      print("refreshed ----");
     });
+  }
+
+  Future<List<ClothingModel>> _getBasket() async {
+    return UserService.getBasket();
+  }
+
+  int _getTotal(List<ClothingModel> data) {
+    var res = 0;
+    for (var el in data) {
+      res += el.price!;
+    }
+    return res;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      // future: UserService.getBasket(),
       future: _basketFuture,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
           final data = snapshot.data;
+          if (data.length == 0) {
+            return Text("Votre panier est vide.");
+          }
           for (var element in data) print(element);
           return ListView(children: [
             for (var element in data)
@@ -47,8 +62,13 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
                 size: element.size,
                 photoUrl: element.photoUrl,
                 isBasketArticle: true,
-                deleteCallback: refreshBasket,
+                deleteCallback: _refreshBasket,
               ),
+            Container(
+              padding: EdgeInsets.all(16),
+              alignment: Alignment.bottomCenter,
+              child: Text("Total: ${_getTotal(data)} €"),
+            ),
           ]);
         } else if (snapshot.hasError) {
           // Gestion des erreurs ici

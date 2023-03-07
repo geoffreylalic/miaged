@@ -122,8 +122,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                         user.basket = profile["basket"];
                         await prefs.setString(
                             'user', jsonEncode(user.toJson()));
-                        print("value -> $value");
-                        print("user $user");
                         Navigator.push(
                             context,
                             MaterialPageRoute(
