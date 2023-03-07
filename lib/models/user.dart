@@ -9,6 +9,7 @@ class UserModel {
   String? idUser;
   int? birthdate;
   List<dynamic>? basket;
+  String? password;
 
   UserModel({
     this.username,
@@ -20,6 +21,7 @@ class UserModel {
     this.idUser,
     this.birthdate,
     this.basket,
+    this.password,
   });
 
   UserModel.fromJson(Map<String, dynamic>? json) {
@@ -33,6 +35,7 @@ class UserModel {
     idUser = json['idUser'];
     birthdate = json['birthdate'];
     basket = json['basket'];
+    password = json['password'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +50,7 @@ class UserModel {
     data['idUser'] = idUser;
     data['birthdate'] = birthdate;
     data['basket'] = basket;
+    data['password'] = password;
     return data;
   }
 }

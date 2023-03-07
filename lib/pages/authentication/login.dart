@@ -120,6 +120,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         user.address = profile["address"];
                         user.zipCode = profile["zipCode"];
                         user.basket = profile["basket"];
+                        user.password = _password;
                         await prefs.setString(
                             'user', jsonEncode(user.toJson()));
                         Navigator.push(

@@ -4,9 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:miaged/models/user.dart';
+import 'package:miaged/pages/authentication/landingPage.dart';
+import 'package:miaged/services/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/login.dart';
+import 'clothingList.dart';
 import 'home.dart';
 
 class ProfileWidget extends StatefulWidget {
@@ -19,56 +23,37 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget> {
   final _formKey = GlobalKey<FormState>();
   late DateTime _birthdate = DateTime.now();
-  late String _address;
-  late String _zipCode;
-  late String _city;
-  late String _password;
+  // late String _address;
+  // late String _zipCode;
+  // late String _city;
+  // late String _password;
   late bool _passwordVisible;
+  late UserModel user;
 
   @override
   void initState() {
     _passwordVisible = false;
+    UserService.getProfile().then((value) {
+      setState(() {
+        print("heere init state");
+        user = value;
+        _birthdate =
+            DateTime.fromMicrosecondsSinceEpoch((user.birthdate as int));
+      });
+    });
   }
 
-  @override
   Future<void> _selectDate(BuildContext context) async {
+    print("here ");
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
+        initialDate: _birthdate,
+        firstDate: DateTime(1900),
         lastDate: DateTime(2100));
     if (picked != null && picked != _birthdate) {
       setState(() {
-        _birthdate = picked;
+        user.birthdate = ((picked.millisecondsSinceEpoch) * 1000);
       });
-    }
-  }
-
-  void completeProfile() async {
-    var prefs = await SharedPreferences.getInstance();
-    var prefsUserStored = prefs.getString("user");
-    var user = jsonDecode(prefsUserStored!);
-    final snapshot = await FirebaseFirestore.instance
-        .collection('profiles')
-        .where('idUser', isEqualTo: user["idUser"])
-        .limit(1)
-        .get();
-    if (snapshot.size > 0) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LoginWidget()));
-    } else {
-      print('Aucun utilisateur trouvé.');
-      user["birthdate"] = _birthdate;
-      user["address"] = _address;
-      user["zipCode"] = _zipCode;
-      user["city"] = _city;
-      user["basket"] = [];
-      final docRef =
-          FirebaseFirestore.instance.collection('profiles').doc(user["idUser"]);
-      docRef.set(user).then((value) => print("Profile créé")).catchError(
-          (error) => print("Erreur lors de la création du profile: $error"));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomeWidget()));
     }
   }
 
@@ -82,25 +67,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // TextFormField(
-              //   decoration:
-              //       const InputDecoration(labelText: 'Date de naissance'),
-              //   keyboardType: TextInputType.datetime,
-              //   validator: (value) {
-              //     if (value == '') {
-              //       return 'Veuillez entrer une date de naissance';
-              //     }
-              //     return null;
-              //   },
-              //   onSaved: (value) {
-              //     _birthdate = value! as DateTime;
-              //   },
-              // ),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'login'),
+                initialValue: user.username,
+                decoration: const InputDecoration(labelText: 'pseudo'),
                 enabled: false,
               ),
               TextFormField(
+                initialValue: user.password,
                 decoration: InputDecoration(
                     labelText: 'Mot de passe',
                     suffixIcon: IconButton(
@@ -127,13 +100,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   return null;
                 },
                 onSaved: (value) {
-                  _password = value!;
+                  user.password = value!;
                 },
               ),
               ListTile(
                 title: const Text('Date de naissance'),
                 trailing: IconButton(
-                  icon: Icon(Icons.calendar_today),
+                  icon: const Icon(Icons.calendar_today),
                   onPressed: () => _selectDate(context),
                 ),
                 subtitle: _birthdate == null
@@ -141,6 +114,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     : Text('Date sélectionnée : ${_birthdate.toString()}'),
               ),
               TextFormField(
+                initialValue: user.address,
                 decoration: const InputDecoration(labelText: 'Adresse'),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -150,10 +124,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   return null;
                 },
                 onSaved: (value) {
-                  _address = value!;
+                  user.address = value!;
                 },
               ),
               TextFormField(
+                initialValue: user.zipCode,
                 decoration: const InputDecoration(labelText: 'Code postal'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -163,10 +138,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   return null;
                 },
                 onSaved: (value) {
-                  _zipCode = value!;
+                  user.zipCode = value!;
                 },
               ),
               TextFormField(
+                initialValue: user.city,
                 decoration: const InputDecoration(labelText: 'Ville'),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -176,7 +152,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   return null;
                 },
                 onSaved: (value) {
-                  _city = value!;
+                  user.city = value!;
                 },
               ),
               Padding(
@@ -185,11 +161,31 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      completeProfile();
-                      // Enregistrer les données de l'utilisateur
+                      UserService.updateProfile(user.toJson());
+                      UserService.changePassword(user.password as String);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ClothingListWidget(
+                                  wantedNavigation: "buy")));
                     }
                   },
                   child: const Text("Confirmer"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    print("pressed se deconnecter");
+                    UserService.logOut().then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LandingPageWidget()));
+                    });
+                  },
+                  child: const Text("Se déconnecter"),
                 ),
               ),
             ],

@@ -117,7 +117,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               token: value?.refreshToken,
                               idUser: value?.uid,
                               username: _username,
-                              basket: []);
+                              basket: [],
+                              password: _password);
                           String userStore = jsonEncode(user);
                           await prefs.setString('user', userStore);
                           Navigator.push(

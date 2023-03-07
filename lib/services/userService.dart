@@ -92,19 +92,53 @@ class UserService {
             print('Erreur lors de la mise à jour du document: $error'));
   }
 
-  static getProfile() async {
+  static Future<UserModel> getProfile() async {
     var prefs = await SharedPreferences.getInstance();
     var prefsUserStored = prefs.getString("user");
     var user = jsonDecode(prefsUserStored!);
     var result;
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('profiles')
         .doc(user["idUser"])
         .get()
         .then((snapshot) {
+      print("value ---- ${snapshot.data()}");
       result = UserModel.fromJson(snapshot.data());
     }).catchError((error) =>
             print('Erreur lors de la mise à jour du document: $error'));
     return result;
+  }
+
+  static void changePassword(String newPassword) async {
+    //Create an instance of the current user.
+    final user = FirebaseAuth.instance.currentUser;
+    try {
+      await user?.updatePassword(newPassword);
+      print("Mot de passe mis à jour avec succès !");
+    } catch (e) {
+      print(
+          "Une erreur s'est produite lors de la mise à jour du mot de passe : $e");
+    }
+  }
+
+  static Future<void> updateProfile(userProfile) async {
+    var prefs = await SharedPreferences.getInstance();
+    var prefsUserStored = prefs.getString("user");
+    var user = jsonDecode(prefsUserStored!);
+    var result;
+    await FirebaseFirestore.instance
+        .collection('profiles')
+        .doc(user["idUser"])
+        .set(userProfile)
+        .then((snapshot) {
+      print("Profile mis à jour");
+    }).catchError((error) =>
+            print('Erreur lors de la mise à jour du document: $error'));
+    return result;
+  }
+
+  static Future<void> logOut() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString("user", "");
   }
 }
