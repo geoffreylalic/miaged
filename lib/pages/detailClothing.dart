@@ -39,21 +39,24 @@ class DetailClothingWidget extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data;
-          return Container(
-              child: ListView(
-            children: [
-              Image.network(data.photoUrl),
-              Text(" name: ${data.name}"),
-              Text(" size: ${data.size}"),
-              Text(" brand: ${data.brand}"),
-              Text(" price: ${data.price.toString()}"),
-              TextButton(
-                  onPressed: returnToListClothing, child: const Text("Retour")),
-              TextButton(
-                onPressed: addToShoppingBasket,
-                child: const Text("Ajouter au panier"),
-              )
-            ],
+          return Scaffold(
+              body: Center(
+            child: ListView(
+              children: [
+                Image.network(data.photoUrl),
+                Text(" nom: ${data.name}"),
+                Text(" taille: ${data.size}"),
+                Text(" marque: ${data.brand}"),
+                Text(" prix: ${data.price.toString()}"),
+                TextButton(
+                    onPressed: returnToListClothing,
+                    child: const Text("Retour")),
+                TextButton(
+                  onPressed: addToShoppingBasket,
+                  child: const Text("Ajouter au panier"),
+                )
+              ],
+            ),
           ));
         } else if (snapshot.hasError) {
           // Gestion des erreurs ici

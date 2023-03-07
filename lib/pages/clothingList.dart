@@ -30,6 +30,7 @@ class _ClothingListWidgetState extends State<ClothingListWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Miaged'),
+        automaticallyImplyLeading: false,
       ),
       body: _navigation == "buy"
           ? const HomeWidget()

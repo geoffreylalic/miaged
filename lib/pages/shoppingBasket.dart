@@ -25,7 +25,6 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
   void _refreshBasket(bool isDeleted) {
     setState(() {
       _basketFuture = _getBasket();
-      _basketFuture = _getBasket();
       print("refreshed ----");
     });
   }
@@ -52,7 +51,7 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
           if (data.length == 0) {
             return Text("Votre panier est vide.");
           }
-          for (var element in data) print(element);
+          for (var element in data);
           return ListView(children: [
             for (var element in data)
               CarteArticle(

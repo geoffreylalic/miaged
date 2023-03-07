@@ -78,11 +78,11 @@ class CarteArticle extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      price.toString(),
+                      "prix: ${price.toString()} €",
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      size!,
+                      "taille: ${size!}",
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
