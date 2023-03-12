@@ -30,7 +30,7 @@ class UserService {
     return user;
   }
 
-  static void addToBasket(String idArticle) async {
+  static Future<void> addToBasket(String idArticle) async {
     var prefs = await SharedPreferences.getInstance();
     var prefsUserStored = prefs.getString("user");
     var user = jsonDecode(prefsUserStored!);
@@ -50,43 +50,52 @@ class UserService {
   }
 
   static Future<List<ClothingModel>> getBasket() async {
-    var prefs = await SharedPreferences.getInstance();
-    var prefsUserStored = prefs.getString("user");
-    var user = jsonDecode(prefsUserStored!);
-    var basket = user["basket"];
-    List<ClothingModel> result = [];
-    for (var idArticle in basket) {
-      var doc = await FirebaseFirestore.instance
+    final prefs = await SharedPreferences.getInstance();
+    final prefsUserStored = prefs.getString("user");
+    final user = jsonDecode(prefsUserStored!) as Map<String, dynamic>;
+    final basket = user["basket"];
+    final result = <ClothingModel>[];
+    for (final idArticle in basket) {
+      final doc = await FirebaseFirestore.instance
           .collection('clothings')
           .doc(idArticle)
           .get();
-      var article = doc.data();
-      var data = ClothingModel(
-          id: doc.id,
-          brand: article!["brand"],
-          name: article["name"],
-          photoUrl: article["photoUrl"],
-          price: article["price"],
-          size: article["size"]);
-      result.add(data);
+      if (doc.exists) {
+        final article = doc.data()!;
+        final data = ClothingModel(
+            id: doc.id,
+            brand: article["brand"],
+            name: article["name"],
+            photoUrl: article["photoUrl"],
+            price: article["price"],
+            size: article["size"]);
+        result.add(data);
+      }
     }
     return result;
   }
 
-  static void removeFromBasket(String? idArticle) async {
-    var prefs = await SharedPreferences.getInstance();
-    var prefsUserStored = prefs.getString("user");
-    var user = jsonDecode(prefsUserStored!);
-    var basket = user["basket"];
+  static Future<void> removeFromBasket(String? idArticle) async {
+    final prefs = await SharedPreferences.getInstance();
+    final prefsUserStored = prefs.getString("user");
+    final Map<String, dynamic> user = jsonDecode(prefsUserStored!);
+    final List<dynamic> basket = List<dynamic>.from(user["basket"]);
+
+    if (!basket.contains(idArticle)) {
+      print("L'article avec l'ID $idArticle n'est pas présent dans le panier.");
+      return;
+    }
+
     basket.remove(idArticle);
-    // prefs.setString("user", jsonDecode(user));
-    FirebaseFirestore.instance
+    user["basket"] = basket;
+
+    await FirebaseFirestore.instance
         .collection('profiles')
         .doc(user["idUser"])
         .set(user)
-        .then((value) {
+        .then((_) {
       print('Panier mis à jour');
-      var encodedUser = jsonEncode(user);
+      final encodedUser = jsonEncode(user);
       prefs.setString('user', encodedUser);
     }).catchError((error) =>
             print('Erreur lors de la mise à jour du document: $error'));

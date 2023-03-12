@@ -47,7 +47,6 @@ class CarteArticle extends StatelessWidget {
               isBasketArticle == true
                   ? IconButton(
                       onPressed: () {
-                        UserService.removeFromBasket(id);
                         deleteCallback!(true);
                         // Navigator.push(
                         //     context,

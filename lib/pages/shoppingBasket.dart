@@ -29,6 +29,7 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
     });
     UserService.getBasket().then(((value) {
       setState(() {
+        _data = [];
         _data = value;
         _isLoading = false;
       });
@@ -82,7 +83,11 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
                         photoUrl: card.photoUrl,
                         isBasketArticle: true,
                         deleteCallback: ((_) {
-                          _getBasket();
+                          setState(() {
+                            _isLoading = true;
+                            UserService.removeFromBasket(card.id)
+                                .then((value) => _getBasket());
+                          });
                         }),
                       ),
                   ],

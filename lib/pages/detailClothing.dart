@@ -25,13 +25,12 @@ class DetailClothingWidget extends StatelessWidget {
     }
 
     void addToShoppingBasket() {
-      UserService.addToBasket(idClothing);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                const ClothingListWidget(wantedNavigation: "shoppingBasket")),
-      );
+      UserService.addToBasket(idClothing).then((value) => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ClothingListWidget(
+                    wantedNavigation: "shoppingBasket")),
+          ));
     }
 
     return FutureBuilder(
