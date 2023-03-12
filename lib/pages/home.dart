@@ -30,35 +30,44 @@ class _HomeWidgetState extends State<HomeWidget> {
         if (snapshot.hasData) {
           final data = snapshot.data;
 
-          return ListView(children: [
-            for (var element in data)
-              GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DetailClothingWidget(
-                              idClothing: element.id,
-                            ))),
-                child: CarteArticle(
-                  id: element.id,
-                  name: element.name,
-                  price: element.price,
-                  size: element.size,
-                  photoUrl: element.photoUrl,
-                  isBasketArticle: false,
-                ),
-              )
-          ]);
-        } else if (snapshot.hasError) {
-          // Gestion des erreurs ici
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Erreur de connexion liste'),
+          return SafeArea(
+              child: GestureDetector(
+            child: Align(
+              alignment: const AlignmentDirectional(0, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                      child: GridView(
+                        padding: EdgeInsets.zero,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 1,
+                        ),
+                        scrollDirection: Axis.vertical,
+                        children: [
+                          for (var card in data)
+                            CarteArticle(
+                              id: card.id,
+                              isBasketArticle: false,
+                              name: card.name,
+                              photoUrl: card.photoUrl,
+                              price: card.price,
+                              size: card.size,
+                            )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            body: Center(
-              child: Text('Erreur: ${snapshot.error}'),
-            ),
-          );
+          ));
         } else {
           return const Scaffold(
             body: Center(
