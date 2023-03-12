@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:miaged/models/user.dart';
 import 'package:miaged/pages/authentication/landingPage.dart';
@@ -18,10 +17,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   late DateTime _birthdate = DateTime.now();
   late bool _passwordVisible;
   late UserModel user;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _isLoading = true;
     _passwordVisible = false;
     UserService.getProfile().then((value) {
       setState(() {
@@ -29,6 +30,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         user = value;
         _birthdate =
             DateTime.fromMicrosecondsSinceEpoch((user.birthdate as int));
+        _isLoading = false;
       });
     });
   }
@@ -49,6 +51,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -151,8 +158,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      UserService.updateProfile(user.toJson());
+                      setState(() {
+                        _isLoading = true;
+                      });
                       UserService.changePassword(user.password as String);
+                      UserService.updateProfile(user.toJson()).then((value) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      });
                       Navigator.push(
                           context,
                           MaterialPageRoute(

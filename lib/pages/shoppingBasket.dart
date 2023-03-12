@@ -13,24 +13,26 @@ class ShoppingBasketWidget extends StatefulWidget {
 }
 
 class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
-  late Future<List<ClothingModel>> _basketFuture;
+  late List<ClothingModel> _data = [];
+  late bool _isLoading = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _basketFuture = _getBasket();
+    _getBasket();
   }
 
-  void _refreshBasket(bool isDeleted) {
+  void _getBasket() {
+    print("_get baskket --- triggred -");
     setState(() {
-      _basketFuture = _getBasket();
-      print("refreshed ----");
+      _isLoading = true;
     });
-  }
-
-  Future<List<ClothingModel>> _getBasket() async {
-    return UserService.getBasket();
+    UserService.getBasket().then(((value) {
+      setState(() {
+        _data = value;
+        _isLoading = false;
+      });
+    }));
   }
 
   int _getTotal(List<ClothingModel> data) {
@@ -43,90 +45,58 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _basketFuture,
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          // final data = snapshot.data;
-          // if (data.length == 0) {
-          //   return Text("Votre panier est vide.");
-          // }
-          // for (var element in data);
-          // return ListView(children: [
-          //   for (var element in data)
-          //     CarteArticle(
-          //       id: element.id,
-          //       name: element.name,
-          //       price: element.price,
-          //       size: element.size,
-          //       photoUrl: element.photoUrl,
-          //       isBasketArticle: true,
-          //       deleteCallback: _refreshBasket,
-          //     ),
-          final data = snapshot.data;
-          return SafeArea(
-              child: GestureDetector(
-            child: Align(
-              alignment: const AlignmentDirectional(0, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 20),
-                      child: GridView(
-                        padding: EdgeInsets.zero,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 1,
-                        ),
-                        scrollDirection: Axis.vertical,
-                        children: [
-                          for (var card in data)
-                            CarteArticle(
-                              id: card.id,
-                              name: card.name,
-                              price: card.price,
-                              size: card.size,
-                              photoUrl: card.photoUrl,
-                              isBasketArticle: true,
-                              deleteCallback: _refreshBasket,
-                            ),
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            alignment: Alignment.bottomCenter,
-                            child: Text("Total: ${_getTotal(data)} €"),
-                          ),
-                        ],
-                      ),
-                    ),
+    if (_isLoading) {
+      return const Scaffold(
+        body: CircularProgressIndicator(),
+      );
+    }
+    if (_data.isEmpty) {
+      return const Text("Votre panier est vide.");
+    }
+    return SafeArea(
+        child: GestureDetector(
+      child: Align(
+        alignment: const AlignmentDirectional(0, 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 20),
+                child: GridView(
+                  padding: EdgeInsets.zero,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 1,
                   ),
-                ],
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    for (var card in _data)
+                      CarteArticle(
+                        id: card.id,
+                        name: card.name,
+                        price: card.price,
+                        size: card.size,
+                        photoUrl: card.photoUrl,
+                        isBasketArticle: true,
+                        deleteCallback: ((_) {
+                          _getBasket();
+                        }),
+                      ),
+                  ],
+                ),
               ),
             ),
-          ));
-        } else if (snapshot.hasError) {
-          // Gestion des erreurs ici
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Erreur de connexion liste'),
+            Container(
+              padding: const EdgeInsets.all(16),
+              alignment: Alignment.bottomCenter,
+              child: Text("Total: ${_getTotal(_data)} €"),
             ),
-            body: Center(
-              child: Text('Erreur: ${snapshot.error}'),
-            ),
-          );
-        } else {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
+          ],
+        ),
+      ),
+    ));
   }
 }
