@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/clothingList.dart';
 import '../services/userService.dart';
 
 class CarteArticle extends StatelessWidget {
@@ -13,7 +11,7 @@ class CarteArticle extends StatelessWidget {
   final bool? isBasketArticle;
   final Function(bool)? deleteCallback;
 
-  const CarteArticle({
+  const CarteArticle({super.key, 
     required this.id,
     required this.name,
     required this.price,

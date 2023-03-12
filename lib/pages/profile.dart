@@ -1,17 +1,10 @@
-import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:miaged/models/user.dart';
 import 'package:miaged/pages/authentication/landingPage.dart';
 import 'package:miaged/services/userService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'authentication/login.dart';
 import 'clothingList.dart';
-import 'home.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
@@ -23,15 +16,12 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget> {
   final _formKey = GlobalKey<FormState>();
   late DateTime _birthdate = DateTime.now();
-  // late String _address;
-  // late String _zipCode;
-  // late String _city;
-  // late String _password;
   late bool _passwordVisible;
   late UserModel user;
 
   @override
   void initState() {
+    super.initState();
     _passwordVisible = false;
     UserService.getProfile().then((value) {
       setState(() {

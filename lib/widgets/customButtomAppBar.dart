@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class CustomBottomAppBar extends StatefulWidget {
   final void Function(String) onNavigationChanged;
 
-  const CustomBottomAppBar({
+  const CustomBottomAppBar({super.key, 
     required this.onNavigationChanged,
   });
 

@@ -23,7 +23,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _selectDate(BuildContext context) async {
+    Future<void> selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
           context: context,
           initialDate: DateTime.now(),
@@ -46,6 +46,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget> {
           .limit(1)
           .get();
       if (snapshot.size > 0) {
+        // ignore: use_build_context_synchronously
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const LoginWidget()));
       } else {
@@ -93,8 +94,8 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget> {
               ListTile(
                 title: const Text('Date de naissance'),
                 trailing: IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () => _selectDate(context),
+                  icon: const Icon(Icons.calendar_today),
+                  onPressed: () => selectDate(context),
                 ),
                 subtitle: _birthdate == null
                     ? const Text('Aucune date sélectionnée')
@@ -127,7 +128,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Ville'),
+                decoration: const InputDecoration(labelText: 'Ville'),
                 validator: (value) {
                   if (value == "") {
                     return 'Veuillez entrer une ville valide';

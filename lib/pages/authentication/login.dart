@@ -1,16 +1,11 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:miaged/models/user.dart';
 import 'package:miaged/pages/clothingList.dart';
-import 'package:miaged/pages/home.dart';
 import 'package:miaged/services/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert' show JSON;
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
@@ -21,7 +16,6 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends State<LoginWidget> {
   final _formKey = GlobalKey<FormState>();
-  late String _username;
   late String _email;
   late String _password;
   late bool _passwordVisible;
@@ -29,6 +23,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   void initState() {
+    super.initState();
     _passwordVisible = false;
   }
 
@@ -46,7 +41,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == "") {
@@ -92,7 +87,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 },
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -113,7 +108,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         // DateTime.fromMillisecondsSinceEpoch(
                         //     profile!["birthdate"].seconds * 1000);
                         user.birthdate = birthdate;
-                        user.photoUrl = profile!["photoUrl"];
+                        user.photoUrl = profile["photoUrl"];
                         user.username = profile["username"];
                         user.email = profile["email"];
                         user.city = profile["city"];
@@ -123,6 +118,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         user.password = _password;
                         await prefs.setString(
                             'user', jsonEncode(user.toJson()));
+                        // ignore: use_build_context_synchronously
                         Navigator.push(
                             context,
                             MaterialPageRoute(

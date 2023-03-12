@@ -102,7 +102,6 @@ class UserService {
         .doc(user["idUser"])
         .get()
         .then((snapshot) {
-      print("value ---- ${snapshot.data()}");
       result = UserModel.fromJson(snapshot.data());
     }).catchError((error) =>
             print('Erreur lors de la mise à jour du document: $error'));
