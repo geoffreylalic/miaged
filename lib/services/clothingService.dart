@@ -2,10 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/clothing.dart';
 
 class ArticleService {
-  static Future<List<ClothingModel>> getArticles() async {
+  static Future<List<ClothingModel>> getArticles(String filter) async {
     final articles = <ClothingModel>[];
-    final querySnapshot =
-        await FirebaseFirestore.instance.collection('clothings').get();
+    var querySnapshot;
+    if (filter == "") {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection('clothings').get();
+    } else {
+      querySnapshot = await FirebaseFirestore.instance
+          .collection('clothings')
+          .where('name', isGreaterThanOrEqualTo: filter)
+          .where('name', isLessThanOrEqualTo: filter + '\uf8ff')
+          .get();
+    }
+    print("querySnapshot ${querySnapshot}");
     for (final doc in querySnapshot.docs) {
       final data = doc.data();
       final article = ClothingModel(

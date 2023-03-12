@@ -74,7 +74,7 @@ class _ShoppingBasketWidgetState extends State<ShoppingBasketWidget> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                          const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 20),
                       child: GridView(
                         padding: EdgeInsets.zero,
                         gridDelegate:

@@ -27,8 +27,8 @@ class CarteArticle extends StatelessWidget {
         elevation: 4,
         // margin: const EdgeInsets.all(10),
         child: SizedBox(
-          height: 200,
-          width: 100,
+          // height: 200,
+          // width: 100,
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -55,12 +55,12 @@ class CarteArticle extends StatelessWidget {
                         //         builder: (context) => const ClothingListWidget(
                         //             wantedNavigation: 'shoppingBasket')));
                       },
-                      icon: const Icon(Icons.delete))
+                      icon: const Icon(Icons.delete), color: Colors.red,)
                   : Container(),
               Image.network(
                 photoUrl!,
                 fit: BoxFit.cover,
-                width: 50,
+                width: 100,
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
