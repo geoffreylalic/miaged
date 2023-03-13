@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/clothing.dart';
 
 class ArticleService {
-  static Future<List<ClothingModel>> getArticles(String filter) async {
+  static Future<List<ClothingModel>> getArticles(
+      String filter, String category) async {
     final articles = <ClothingModel>[];
     var querySnapshot;
     if (filter == "") {
