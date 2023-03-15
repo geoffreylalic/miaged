@@ -18,7 +18,7 @@ class ClothingModel {
   });
 
   ClothingModel.fromJson(Map<String, dynamic> json) {
-    name = json['id'];
+    id = json['id'];
     name = json['name'];
     photoUrl = json['photoUrl'];
     size = json['size'];

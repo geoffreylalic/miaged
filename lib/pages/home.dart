@@ -133,7 +133,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                         setState(() {
                           _filter = value;
                         });
-                        ArticleService.getArticles(value, _category)
+                        ArticleService.getArticles(_filter, _category)
                             .then((value) {
                           setState(() {
                             _data = [];
