@@ -5,6 +5,7 @@ class ClothingModel {
   String? size;
   int? price;
   String? brand;
+  String? category;
 
   ClothingModel({
     this.id,
@@ -13,6 +14,7 @@ class ClothingModel {
     this.size,
     this.price,
     this.brand,
+    this.category,
   });
 
   ClothingModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class ClothingModel {
     size = json['size'];
     price = json['price'];
     brand = json['brand'];
+    category = json['category'];
   }
 
   Map<String, dynamic> toJson(List<ClothingModel> value) {
@@ -32,11 +35,12 @@ class ClothingModel {
     data['size'] = size;
     data['price'] = price;
     data['brand'] = brand;
+    data['category'] = category;
     return data;
   }
 
   @override
   String toString() {
-    return 'ClothingModel {id $id ,name $name photoUrl $photoUrl size $size price $price brand $brand}';
+    return 'ClothingModel {id $id ,name $name photoUrl $photoUrl size $size price $price brand $brand, category $category}';
   }
 }

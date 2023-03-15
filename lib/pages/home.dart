@@ -14,7 +14,7 @@ class HomeWidget extends StatefulWidget {
   State<HomeWidget> createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
   late List<ClothingModel> _data = [];
   final TextEditingController _controller = TextEditingController();
   late bool _isLoading = false;
@@ -35,6 +35,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   void initState() {
     super.initState();
     _isLoading = true;
+    _tabController = TabController(length: 7, vsync: this);
     ArticleService.getArticles("", "").then(
       (value) {
         setState(() {
@@ -47,7 +48,9 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void refreshCategory(category) {
     setState(() {
-      _category = "";
+      _category = category;
+      _data = [];
+      _isLoading = true;
     });
     ArticleService.getArticles(_filter, _category).then(
       (value) {
@@ -130,9 +133,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                         setState(() {
                           _filter = value;
                         });
-                        ArticleService.getArticles(_filter, _category)
+                        ArticleService.getArticles(value, _category)
                             .then((value) {
                           setState(() {
+                            _data = [];
                             _data = value;
                           });
                         });

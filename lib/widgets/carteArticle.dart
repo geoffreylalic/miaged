@@ -11,7 +11,8 @@ class CarteArticle extends StatelessWidget {
   final bool? isBasketArticle;
   final Function(bool)? deleteCallback;
 
-  const CarteArticle({super.key, 
+  const CarteArticle({
+    super.key,
     required this.id,
     required this.name,
     required this.price,
@@ -25,41 +26,24 @@ class CarteArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         elevation: 4,
-        // margin: const EdgeInsets.all(10),
         child: SizedBox(
-          // height: 200,
-          // width: 100,
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Expanded(
-              //   child: ClipRRect(
-              //     borderRadius: const BorderRadius.only(
-              //       topLeft: Radius.circular(4),
-              //       topRight: Radius.circular(4),
-              //     ),
-              //     child: Image.network(
-              //       photoUrl!,
-              //       // fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
               isBasketArticle == true
                   ? IconButton(
                       onPressed: () {
                         deleteCallback!(true);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const ClothingListWidget(
-                        //             wantedNavigation: 'shoppingBasket')));
                       },
-                      icon: const Icon(Icons.delete), color: Colors.red,)
+                      icon: const Icon(Icons.delete),
+                      color: Colors.red,
+                    )
                   : Container(),
-              Image.network(
-                photoUrl!,
-                fit: BoxFit.cover,
-                width: 100,
+              Flexible(
+                child: Image.network(
+                  photoUrl!,
+                  fit: BoxFit.cover,
+                  // width: 100,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
