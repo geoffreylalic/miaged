@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miaged/pages/clothingList.dart';
@@ -25,12 +27,15 @@ class DetailClothingWidget extends StatelessWidget {
     }
 
     void addToShoppingBasket() {
-      UserService.addToBasket(idClothing).then((value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ClothingListWidget(
-                    wantedNavigation: "shoppingBasket")),
-          ));
+      UserService.addToBasket(idClothing).then((value) async {
+        await Future.delayed(const Duration(seconds: 1));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const ClothingListWidget(wantedNavigation: "shoppingBasket")),
+        );
+      });
     }
 
     return FutureBuilder(
