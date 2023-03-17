@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miaged/pages/authentication/login.dart';
+import 'package:miaged/pages/clothingList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
@@ -62,7 +63,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget> {
         docRef.set(user).then((value) => print("Profile créé")).catchError(
             (error) => print("Erreur lors de la création du profile: $error"));
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HomeWidget()));
+            MaterialPageRoute(builder: (context) => const ClothingListWidget(wantedNavigation: "buy")));
       }
     }
 
